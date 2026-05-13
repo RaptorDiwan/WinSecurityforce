@@ -1,1172 +1,734 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Win Security Force – Elite Protection Services</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --black: #0a0a0a;
-      --dark: #111318;
-      --panel: #161b24;
-      --gold: #c9a84c;
-      --gold-light: #e8c97a;
-      --gold-dim: #7a5f25;
-      --red: #c0392b;
-      --white: #f0ede8;
-      --muted: #8a8f9a;
-      --border: rgba(201,168,76,0.18);
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'Barlow', sans-serif;
-      font-weight: 400;
-      overflow-x: hidden;
-    }
-
-    /* ─── NOISE TEXTURE OVERLAY ─── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.4;
-    }
-
-    /* ─── NAV ─── */
-    nav {
-      position: fixed; top: 0; width: 100%; z-index: 1000;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%;
-      height: 68px;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      display: flex; align-items: center; gap: 12px;
-      text-decoration: none;
-    }
-
-    .nav-logo .shield-icon {
-      width: 36px; height: 36px;
-    }
-
-    .nav-logo-text {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem;
-      letter-spacing: 0.12em;
-      color: var(--gold);
-      line-height: 1;
-    }
-
-    .nav-logo-text span {
-      display: block;
-      font-size: 0.65rem;
-      font-family: 'Barlow Condensed', sans-serif;
-      letter-spacing: 0.25em;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    .nav-links {
-      display: flex; gap: 36px; list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--gold); }
-
-    .nav-cta {
-      background: var(--gold);
-      color: var(--black) !important;
-      padding: 8px 22px;
-      font-weight: 700 !important;
-      color: var(--black);
-      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-      transition: background 0.2s !important;
-    }
-
-    .nav-cta:hover { background: var(--gold-light) !important; color: var(--black) !important; }
-
-    /* ─── HERO ─── */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      position: relative;
-      overflow: hidden;
-      padding: 100px 5% 60px;
-    }
-
-    .hero-bg {
-      position: absolute; inset: 0;
-      background:
-        linear-gradient(135deg, rgba(10,10,10,0.97) 40%, rgba(201,168,76,0.06) 100%),
-        repeating-linear-gradient(
-          -45deg,
-          transparent,
-          transparent 40px,
-          rgba(201,168,76,0.025) 40px,
-          rgba(201,168,76,0.025) 41px
-        );
-    }
-
-    .hero-grid-lines {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
-
-    .hero-content {
-      position: relative; z-index: 2;
-      max-width: 700px;
-    }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--gold);
-      border: 1px solid var(--border);
-      padding: 6px 16px;
-      margin-bottom: 28px;
-    }
-
-    .hero-badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--gold);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
-
-    .hero h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3.5rem, 8vw, 7rem);
-      line-height: 0.95;
-      letter-spacing: 0.04em;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
-
-    .hero h1 .gold { color: var(--gold); }
-
-    .hero h1 .outline {
-      -webkit-text-stroke: 1px var(--white);
-      color: transparent;
-    }
-
-    .hero-sub {
-      font-size: 1.1rem;
-      color: var(--muted);
-      line-height: 1.7;
-      margin: 24px 0 40px;
-      max-width: 500px;
-      font-weight: 300;
-    }
-
-    .hero-actions {
-      display: flex; gap: 16px; flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      background: var(--gold);
-      color: var(--black);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 14px 36px;
-      text-decoration: none;
-      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
-      transition: background 0.2s, transform 0.2s;
-      display: inline-block;
-    }
-
-    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
-
-    .btn-outline {
-      border: 1px solid var(--gold-dim);
-      color: var(--gold);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 14px 36px;
-      text-decoration: none;
-      transition: border-color 0.2s, background 0.2s;
-      display: inline-block;
-    }
-
-    .btn-outline:hover { border-color: var(--gold); background: rgba(201,168,76,0.07); }
-
-    .hero-stats {
-      display: flex; gap: 48px; margin-top: 60px;
-      position: relative;
-    }
-
-    .hero-stats::before {
-      content: '';
-      position: absolute; top: -20px; left: 0;
-      width: 60px; height: 1px;
-      background: var(--gold);
-    }
-
-    .stat-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.4rem;
-      color: var(--gold);
-      letter-spacing: 0.05em;
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-top: 4px;
-    }
-
-    /* ─── HERO SHIELD DECORATION ─── */
-    .hero-deco {
-      position: absolute; right: 5%; top: 50%;
-      transform: translateY(-50%);
-      opacity: 0.08;
-      pointer-events: none;
-    }
-
-    /* ─── SECTION BASE ─── */
-    section { padding: 100px 5%; }
-
-    .section-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 12px;
-    }
-
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.4rem, 4vw, 3.6rem);
-      letter-spacing: 0.04em;
-      line-height: 1;
-      margin-bottom: 16px;
-    }
-
-    .section-sub {
-      font-size: 1rem;
-      color: var(--muted);
-      max-width: 520px;
-      line-height: 1.7;
-      font-weight: 300;
-    }
-
-    /* ─── ABOUT STRIP ─── */
-    .about-strip {
-      background: var(--panel);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 60px 5%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-
-    .about-text p {
-      color: var(--muted);
-      line-height: 1.8;
-      font-size: 0.98rem;
-      font-weight: 300;
-    }
-
-    .about-text p + p { margin-top: 16px; }
-
-    .about-feature-list {
-      list-style: none;
-      display: flex; flex-direction: column; gap: 16px;
-    }
-
-    .about-feature-list li {
-      display: flex; align-items: flex-start; gap: 14px;
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-
-    .about-feature-list li::before {
-      content: '▸';
-      color: var(--gold);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    /* ─── SERVICES ─── */
-    #services { background: var(--black); }
-
-    .services-header {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      margin-bottom: 56px;
-      flex-wrap: wrap; gap: 24px;
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2px;
-    }
-
-    .service-card {
-      background: var(--panel);
-      border: 1px solid rgba(201,168,76,0.1);
-      padding: 40px 36px;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-      display: flex; flex-direction: column; gap: 16px;
-    }
-
-    .service-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0;
-      width: 3px; height: 0;
-      background: var(--gold);
-      transition: height 0.4s ease;
-    }
-
-    .service-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-4px); }
-    .service-card:hover::before { height: 100%; }
-
-    .service-icon {
-      font-size: 2rem;
-      margin-bottom: 4px;
-    }
-
-    .service-tag {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--gold);
-      border: 1px solid var(--border);
-      padding: 3px 10px;
-      display: inline-block;
-      width: fit-content;
-    }
-
-    .service-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem;
-      letter-spacing: 0.06em;
-      color: var(--white);
-      line-height: 1.1;
-    }
-
-    .service-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.7;
-      font-weight: 300;
-      flex: 1;
-    }
-
-    .service-price {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      color: var(--gold);
-      letter-spacing: 0.05em;
-      margin-top: 8px;
-    }
-
-    .service-price span {
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.8rem;
-      color: var(--muted);
-      font-weight: 300;
-      letter-spacing: 0;
-    }
-
-    /* Razorpay button container */
-    .razorpay-wrap {
-      margin-top: 12px;
-    }
-
-    .razorpay-wrap form {
-      display: inline-block;
-    }
-
-    /* ─── WHY US ─── */
-    #why { background: var(--dark); }
-
-    .why-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1px;
-      margin-top: 60px;
-      background: var(--border);
-    }
-
-    .why-card {
-      background: var(--dark);
-      padding: 40px 32px;
-      display: flex; flex-direction: column; gap: 14px;
-    }
-
-    .why-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 3rem;
-      color: rgba(201,168,76,0.15);
-      line-height: 1;
-    }
-
-    .why-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--white);
-    }
-
-    .why-desc {
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.7;
-      font-weight: 300;
-    }
-
-    /* ─── BOOKING / CONTACT ─── */
-    #booking { background: var(--black); }
-
-    .booking-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      margin-top: 60px;
-      align-items: start;
-    }
-
-    .booking-info {
-      position: sticky; top: 100px;
-    }
-
-    .booking-info p {
-      color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.8;
-      font-weight: 300;
-      margin-top: 16px;
-    }
-
-    .contact-chips {
-      display: flex; flex-direction: column; gap: 14px;
-      margin-top: 36px;
-    }
-
-    .contact-chip {
-      display: flex; align-items: center; gap: 16px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 16px 20px;
-      font-size: 0.9rem;
-    }
-
-    .contact-chip-icon {
-      font-size: 1.2rem;
-      width: 28px; text-align: center;
-    }
-
-    .contact-chip-text {
-      font-weight: 500;
-      color: var(--white);
-    }
-
-    .contact-chip-sub {
-      font-size: 0.8rem;
-      color: var(--muted);
-      font-weight: 300;
-    }
-
-    /* Form */
-    .booking-form {
-      display: flex; flex-direction: column; gap: 20px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .form-group {
-      display: flex; flex-direction: column; gap: 8px;
-    }
-
-    .form-group label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      background: var(--panel);
-      border: 1px solid rgba(201,168,76,0.15);
-      color: var(--white);
-      padding: 13px 16px;
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.92rem;
-      outline: none;
-      transition: border-color 0.2s;
-      appearance: none;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--gold);
-    }
-
-    .form-group textarea { resize: vertical; min-height: 100px; }
-
-    .form-group select option { background: var(--panel); }
-
-    .form-submit-wrap {
-      margin-top: 8px;
-    }
-
-    .form-submit-wrap .razorpay-wrap {
-      margin-top: 16px;
-    }
-
-    .form-note {
-      font-size: 0.78rem;
-      color: var(--muted);
-      font-weight: 300;
-      line-height: 1.6;
-      margin-top: 4px;
-    }
-
-    /* ─── TESTIMONIALS ─── */
-    #testimonials { background: var(--panel); }
-
-    .testimonials-track {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      margin-top: 56px;
-    }
-
-    .testi-card {
-      background: var(--dark);
-      padding: 36px 32px;
-      border: 1px solid rgba(201,168,76,0.08);
-    }
-
-    .testi-stars {
-      color: var(--gold);
-      font-size: 0.8rem;
-      letter-spacing: 3px;
-      margin-bottom: 16px;
-    }
-
-    .testi-quote {
-      font-size: 0.93rem;
-      color: var(--muted);
-      line-height: 1.75;
-      font-weight: 300;
-      font-style: italic;
-    }
-
-    .testi-author {
-      margin-top: 24px;
-      display: flex; align-items: center; gap: 12px;
-    }
-
-    .testi-avatar {
-      width: 40px; height: 40px;
-      background: var(--gold-dim);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1rem;
-      color: var(--gold);
-      flex-shrink: 0;
-    }
-
-    .testi-name {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .testi-role {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--dark);
-      border-top: 1px solid var(--border);
-      padding: 60px 5% 32px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      gap: 60px;
-      margin-bottom: 56px;
-    }
-
-    .footer-brand p {
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.7;
-      font-weight: 300;
-      margin-top: 16px;
-    }
-
-    .footer-col h4 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 20px;
-    }
-
-    .footer-col ul {
-      list-style: none;
-      display: flex; flex-direction: column; gap: 10px;
-    }
-
-    .footer-col ul li a {
-      font-size: 0.88rem;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-      font-weight: 300;
-    }
-
-    .footer-col ul li a:hover { color: var(--gold); }
-
-    .footer-bottom {
-      border-top: 1px solid var(--border);
-      padding-top: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap; gap: 12px;
-    }
-
-    .footer-bottom p {
-      font-size: 0.78rem;
-      color: var(--muted);
-      font-weight: 300;
-    }
-
-    .footer-bottom .license {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-    }
-
-    /* ─── TICKER ─── */
-    .ticker {
-      background: var(--gold);
-      padding: 10px 0;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    .ticker-inner {
-      display: inline-block;
-      animation: ticker 30s linear infinite;
-    }
-
-    .ticker-inner span {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--black);
-      padding: 0 40px;
-    }
-
-    .ticker-inner span::after {
-      content: '◆';
-      padding-left: 40px;
-      opacity: 0.4;
-    }
-
-    @keyframes ticker {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 900px) {
-      .about-strip { grid-template-columns: 1fr; gap: 40px; }
-      .booking-grid { grid-template-columns: 1fr; gap: 48px; }
-      .testimonials-track { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-      .nav-links { display: none; }
-      .form-row { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 600px) {
-      .hero h1 { font-size: 3.2rem; }
-      .hero-stats { gap: 28px; }
-      .footer-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Win Security Force – Elite Protection Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --black:#09090b;--dark:#0f1117;--panel:#14181f;--panel2:#1a2030;
+  --gold:#c9a84c;--gold-light:#e2bc6e;--gold-dim:#6b5120;--gold-bg:rgba(201,168,76,.07);
+  --white:#f0ede8;--muted:#7e8494;--light:#b0b5c0;
+  --border:rgba(201,168,76,.15);--border2:rgba(255,255,255,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;overflow-x:hidden;line-height:1.6}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--dark)}
+::-webkit-scrollbar-thumb{background:var(--gold-dim)}
+
+/* TYPOGRAPHY */
+.label{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px}
+.label::before{content:'';width:20px;height:1px;background:var(--gold)}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,4.5vw,3.8rem);letter-spacing:.04em;line-height:.95;margin-top:14px;margin-bottom:18px}
+.section-sub{font-size:.98rem;color:var(--muted);max-width:500px;line-height:1.8;font-weight:300}
+
+/* NOISE */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");opacity:.5}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;width:100%;z-index:8000;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:rgba(9,9,11,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:background .3s}
+.nav-brand{display:flex;align-items:center;gap:13px}
+.nav-shield svg{width:38px;height:38px}
+.nav-name{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:.1em;color:var(--gold);line-height:1}
+.nav-tagline{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;margin-top:1px}
+.nav-links{display:flex;align-items:center;gap:10px}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:6px 14px;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-btn{background:var(--gold);color:var(--black)!important;font-weight:700!important;clip-path:polygon(9px 0%,100% 0%,calc(100% - 9px) 100%,0% 100%);padding:9px 24px!important;transition:background .2s!important}
+.nav-btn:hover{background:var(--gold-light)!important}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:6px;z-index:8100}
+.hamburger span{display:block;width:26px;height:2px;background:var(--gold);border-radius:2px;transition:.3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:70px;left:0;width:100%;background:rgba(9,9,11,.98);border-bottom:1px solid var(--border);padding:24px 5%;flex-direction:column;gap:6px;z-index:7999}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding:12px 0;border-bottom:1px solid var(--border2);transition:color .2s}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-menu .m-btn{margin-top:12px;background:var(--gold);color:var(--black);font-weight:700;text-align:center;padding:14px;clip-path:polygon(9px 0%,100% 0%,calc(100% - 9px) 100%,0% 100%)}
+
+/* TICKER */
+.ticker{position:relative;top:70px;background:var(--gold);padding:9px 0;overflow:hidden;white-space:nowrap;z-index:100}
+.ticker-inner{display:inline-block;animation:tickerScroll 35s linear infinite}
+.ticker span{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--black);padding:0 32px}
+.ticker span::after{content:'◆';padding-left:32px;opacity:.35}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:160px 5% 80px;overflow:hidden;margin-top:70px}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(125deg,rgba(9,9,11,.97) 35%,rgba(201,168,76,.055) 100%),repeating-linear-gradient(-45deg,transparent,transparent 50px,rgba(201,168,76,.018) 50px,rgba(201,168,76,.018) 51px)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.04) 1px,transparent 1px);background-size:70px 70px}
+.hero-watermark{position:absolute;right:-2%;bottom:5%;font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,18vw,18rem);letter-spacing:.04em;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(201,168,76,.07);pointer-events:none;user-select:none;white-space:nowrap}
+.hero-content{position:relative;z-index:2;max-width:680px}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:7px 18px;margin-bottom:30px}
+.hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.8rem,9vw,8rem);line-height:.92;letter-spacing:.03em}
+.hero h1 .g{color:var(--gold)}
+.hero h1 .o{-webkit-text-stroke:1.5px rgba(240,237,232,.5);color:transparent}
+.hero-desc{font-size:1.05rem;color:var(--muted);line-height:1.8;margin:26px 0 42px;max-width:500px;font-weight:300}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap}
+.btn-gold{background:var(--gold);color:var(--black);font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:15px 40px;display:inline-flex;align-items:center;gap:10px;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:background .2s,transform .2s}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-2px)}
+.btn-ghost{border:1px solid var(--gold-dim);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:15px 40px;display:inline-flex;align-items:center;gap:10px;transition:border-color .2s,background .2s}
+.btn-ghost:hover{border-color:var(--gold);background:var(--gold-bg)}
+.hero-stats{display:flex;gap:52px;margin-top:64px;position:relative;padding-top:28px}
+.hero-stats::before{content:'';position:absolute;top:0;left:0;width:50px;height:2px;background:var(--gold)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:var(--gold);letter-spacing:.04em;line-height:1}
+.stat-label{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.hero-deco{position:absolute;right:4%;top:50%;transform:translateY(-50%);opacity:.07;pointer-events:none}
+
+/* TRUST BAR */
+.trust-bar{background:var(--panel);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);padding:28px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
+.trust-item{display:flex;align-items:center;gap:12px;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.trust-item .ti{font-size:1.4rem}
+.trust-item strong{color:var(--white);font-weight:600}
+
+/* ABOUT */
+#about{padding:110px 5%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about-left .big-quote{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.4rem,2.5vw,1.9rem);letter-spacing:.04em;color:var(--white);line-height:1.2;margin:22px 0 28px;border-left:3px solid var(--gold);padding-left:20px}
+.about-left p{font-size:.95rem;color:var(--muted);line-height:1.85;font-weight:300}
+.about-left p+p{margin-top:16px}
+.about-right{display:flex;flex-direction:column;gap:20px}
+.feat-item{background:var(--panel);border:1px solid var(--border2);border-left:3px solid var(--gold-dim);padding:22px 24px;display:flex;align-items:flex-start;gap:16px;transition:border-left-color .25s,background .25s}
+.feat-item:hover{border-left-color:var(--gold);background:var(--panel2)}
+.feat-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px}
+.feat-text strong{display:block;font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:4px}
+.feat-text span{font-size:.83rem;color:var(--muted);font-weight:300}
+
+/* SERVICES */
+#services{background:var(--dark);padding:110px 5%;border-top:1px solid var(--border2)}
+.services-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;margin-bottom:60px}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:2px;background:var(--border2)}
+.svc-card{background:var(--panel);padding:40px 34px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:14px;transition:background .3s,transform .3s}
+.svc-card::after{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--gold);transition:height .35s ease}
+.svc-card:hover{background:var(--panel2);transform:translateY(-4px)}
+.svc-card:hover::after{height:100%}
+.svc-num{font-family:'Bebas Neue',sans-serif;font-size:.78rem;letter-spacing:.25em;color:var(--gold-dim)}
+.svc-tag{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:3px 10px;width:fit-content}
+.svc-emoji{font-size:2rem;line-height:1;margin-bottom:4px}
+.svc-title{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.05em;color:var(--white);line-height:1.05}
+.svc-desc{font-size:.88rem;color:var(--muted);line-height:1.75;font-weight:300;flex:1}
+.svc-includes{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.svc-includes li{font-size:.8rem;color:var(--light);display:flex;align-items:flex-start;gap:8px;font-weight:300}
+.svc-includes li::before{content:'✓';color:var(--gold);font-size:.8rem;flex-shrink:0}
+.svc-price{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);letter-spacing:.04em;padding-top:8px;border-top:1px solid var(--border2);display:flex;align-items:baseline;gap:6px}
+.svc-price small{font-family:'Barlow',sans-serif;font-size:.75rem;color:var(--muted);font-weight:300;letter-spacing:0}
+.rzp-wrap{margin-top:6px}
+.rzp-wrap form{display:block}
+
+/* PROCESS */
+#process{padding:110px 5%;background:var(--black)}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:60px}
+.process-steps::before{content:'';position:absolute;top:38px;left:calc(12.5%);width:75%;height:1px;background:linear-gradient(90deg,var(--gold-dim),var(--gold),var(--gold-dim));z-index:0}
+.step{position:relative;z-index:1;padding:0 16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
+.step-circle{width:76px;height:76px;border-radius:50%;background:var(--panel);border:2px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);transition:border-color .3s,background .3s}
+.step:hover .step-circle{border-color:var(--gold);background:var(--gold-bg)}
+.step-title{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--white)}
+.step-desc{font-size:.8rem;color:var(--muted);line-height:1.6;font-weight:300}
+
+/* WHY US */
+#why{background:var(--dark);border-top:1px solid var(--border2);padding:110px 5%}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border2);margin-top:60px}
+.why-card{background:var(--dark);padding:44px 36px;display:flex;flex-direction:column;gap:14px;transition:background .25s}
+.why-card:hover{background:var(--panel)}
+.why-num{font-family:'Bebas Neue',sans-serif;font-size:3.2rem;color:rgba(201,168,76,.12);line-height:1}
+.why-icon{font-size:1.8rem}
+.why-title{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--white)}
+.why-desc{font-size:.86rem;color:var(--muted);line-height:1.75;font-weight:300}
+
+/* TESTIMONIALS */
+#testimonials{background:var(--panel);border-top:1px solid var(--border2);padding:110px 5%}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border2);margin-top:60px}
+.testi{background:var(--dark);padding:38px 32px;display:flex;flex-direction:column;gap:16px;transition:background .25s}
+.testi:hover{background:var(--panel2)}
+.testi-stars{color:var(--gold);font-size:.88rem;letter-spacing:3px}
+.testi-quote{font-size:.9rem;color:var(--muted);line-height:1.8;font-weight:300;font-style:italic;flex:1}
+.testi-quote::before{content:'"';font-size:2.5rem;color:var(--gold-dim);line-height:.5;display:block;margin-bottom:10px}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-av{width:44px;height:44px;background:var(--gold-dim);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--gold);flex-shrink:0}
+.testi-name{font-weight:600;font-size:.88rem}
+.testi-role{font-size:.75rem;color:var(--muted);font-weight:300}
+
+/* BOOKING */
+#booking{background:var(--black);border-top:1px solid var(--border2);padding:110px 5%}
+.booking-wrap{display:grid;grid-template-columns:1fr 1.3fr;gap:80px;margin-top:60px;align-items:start}
+.booking-info-side p{font-size:.95rem;color:var(--muted);line-height:1.85;font-weight:300;margin-top:16px}
+.contact-list{margin-top:36px;display:flex;flex-direction:column;gap:14px}
+.ci{display:flex;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--border2);border-left:3px solid var(--gold-dim);padding:18px 20px;transition:border-left-color .2s}
+.ci:hover{border-left-color:var(--gold)}
+.ci-icon{font-size:1.3rem;width:32px;text-align:center;flex-shrink:0}
+.ci-title{font-weight:600;font-size:.9rem}
+.ci-sub{font-size:.78rem;color:var(--muted);font-weight:300;margin-top:2px}
+.booking-note{background:var(--gold-bg);border:1px solid var(--border);padding:20px 22px;margin-top:28px;display:flex;gap:14px;align-items:flex-start}
+.booking-note .ni{font-size:1.2rem;flex-shrink:0;margin-top:2px}
+.booking-note p{font-size:.83rem;color:var(--light);line-height:1.7;font-weight:300}
+.form-wrap{display:flex;flex-direction:column;gap:22px}
+.form-row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fg{display:flex;flex-direction:column;gap:7px}
+.fg label{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}
+.fg input,.fg select,.fg textarea{background:var(--panel);border:1px solid rgba(201,168,76,.12);color:var(--white);padding:13px 16px;font-family:'Barlow',sans-serif;font-size:.92rem;outline:none;transition:border-color .2s,background .2s;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);background:rgba(201,168,76,.04)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--muted);font-weight:300}
+.fg select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.fg select option{background:var(--panel);color:var(--white)}
+.fg textarea{resize:vertical;min-height:110px}
+.form-divider{border:none;border-top:1px solid var(--border2);margin:4px 0}
+.pay-box{background:var(--panel);border:1px solid var(--border);padding:24px 22px}
+.pay-box .pay-title{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.pay-box .pay-note{font-size:.78rem;color:var(--muted);line-height:1.6;font-weight:300;margin-bottom:14px}
+.pay-box form{display:inline-block}
+.quick-pay-box{background:var(--panel);border:1px solid var(--border);padding:24px 22px;margin-top:32px}
+.quick-pay-box .pay-title{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.quick-pay-box .pay-note{font-size:.78rem;color:var(--muted);line-height:1.6;font-weight:300;margin-bottom:14px}
+.quick-pay-box form{display:inline-block}
+
+/* FAQ */
+#faq{background:var(--dark);border-top:1px solid var(--border2);padding:110px 5%}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border2);margin-top:60px}
+.faq-item{background:var(--dark);padding:32px 34px;cursor:pointer;transition:background .2s}
+.faq-item:hover{background:var(--panel)}
+.faq-q{font-family:'Barlow Condensed',sans-serif;font-size:.97rem;font-weight:700;letter-spacing:.06em;color:var(--white);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-q .arrow{font-size:.7rem;color:var(--gold);transition:transform .25s;flex-shrink:0}
+.faq-item.open .faq-q .arrow{transform:rotate(90deg)}
+.faq-a{font-size:.86rem;color:var(--muted);line-height:1.75;font-weight:300;margin-top:14px;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* CTA BANNER */
+.cta-banner{background:var(--gold);padding:70px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:32px;position:relative;overflow:hidden}
+.cta-banner::before{content:'SECURE';position:absolute;right:-2%;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:10rem;color:rgba(0,0,0,.07);pointer-events:none}
+.cta-banner h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);letter-spacing:.04em;color:var(--black);line-height:1}
+.cta-banner p{font-size:.95rem;color:rgba(0,0,0,.6);font-weight:300;margin-top:8px;max-width:500px}
+.cta-btn{background:var(--black);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:16px 44px;flex-shrink:0;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:background .2s}
+.cta-btn:hover{background:#1a1a1a}
+
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid var(--border2);padding:70px 5% 32px}
+.footer-main{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:60px;margin-bottom:56px}
+.footer-brand .fb-logo{display:flex;align-items:center;gap:12px}
+.footer-brand p{font-size:.86rem;color:var(--muted);line-height:1.75;font-weight:300;margin-top:18px}
+.footer-social{display:flex;gap:10px;margin-top:20px}
+.social-btn{width:36px;height:36px;background:var(--panel);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--muted);transition:border-color .2s,color .2s}
+.social-btn:hover{border-color:var(--gold);color:var(--gold)}
+.footer-col h4{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.footer-col ul{display:flex;flex-direction:column;gap:10px}
+.footer-col ul li a{font-size:.86rem;color:var(--muted);font-weight:300;transition:color .2s;display:flex;align-items:center;gap:6px}
+.footer-col ul li a::before{content:'›';color:var(--gold-dim)}
+.footer-col ul li a:hover{color:var(--gold)}
+.footer-bottom{border-top:1px solid var(--border2);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:.77rem;color:var(--muted);font-weight:300}
+.footer-bottom .psara{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim)}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.why-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){
+  .nav-links{display:none}.hamburger{display:flex}
+  #about{grid-template-columns:1fr;gap:48px}
+  .booking-wrap{grid-template-columns:1fr;gap:48px}
+  .testi-grid{grid-template-columns:1fr}
+  .footer-main{grid-template-columns:1fr 1fr;gap:40px}
+  .process-steps{grid-template-columns:1fr 1fr;gap:40px}
+  .process-steps::before{display:none}
+  .faq-grid{grid-template-columns:1fr}
+  .hero-deco{display:none}
+}
+@media(max-width:640px){
+  .hero h1{font-size:3.4rem}.hero-stats{gap:28px}
+  .trust-bar{flex-direction:column;align-items:flex-start}
+  .why-grid{grid-template-columns:1fr}
+  .footer-main{grid-template-columns:1fr}
+  .form-row2{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">
-    <svg class="shield-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M18 3L4 9v10c0 7.18 5.94 13.9 14 16 8.06-2.1 14-8.82 14-16V9L18 3z" fill="none" stroke="#c9a84c" stroke-width="1.8"/>
-      <path d="M12 18l4 4 8-8" stroke="#c9a84c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <div class="nav-logo-text">
-      WIN SECURITY FORCE
-      <span>Elite Protection</span>
+<nav id="nav">
+  <a href="#" class="nav-brand">
+    <div class="nav-shield">
+      <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 3L4 9.5V19c0 8.5 6.3 16.4 15 18.5C27.7 35.4 34 27.5 34 19V9.5L19 3z" stroke="#c9a84c" stroke-width="1.6" fill="rgba(201,168,76,.06)"/>
+        <path d="M13 19l4.5 4.5L25 14" stroke="#c9a84c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="nav-name">Win Security Force</div>
+      <div class="nav-tagline">Elite Protection Services</div>
     </div>
   </a>
   <ul class="nav-links">
+    <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
+    <li><a href="#process">How It Works</a></li>
     <li><a href="#why">Why Us</a></li>
-    <li><a href="#booking">Contact</a></li>
-    <li><a href="#booking" class="nav-cta">Book Now</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#booking" class="nav-btn">Book Now</a></li>
   </ul>
+  <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
 </nav>
 
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mob-menu">
+  <a href="#about" class="mob-link">About</a>
+  <a href="#services" class="mob-link">Services</a>
+  <a href="#process" class="mob-link">How It Works</a>
+  <a href="#why" class="mob-link">Why Us</a>
+  <a href="#faq" class="mob-link">FAQ</a>
+  <a href="#booking" class="mob-link m-btn">Book Now</a>
+</div>
+
 <!-- TICKER -->
-<div style="margin-top:68px;" class="ticker">
+<div class="ticker">
   <div class="ticker-inner">
-    <span>24/7 Protection</span>
-    <span>Licensed & Verified</span>
-    <span>Personal Security</span>
-    <span>Escort Services</span>
-    <span>Outstation Coverage</span>
-    <span>Family Protection</span>
-    <span>VIP Bodyguard</span>
-    <span>Event Security</span>
-    <span>24/7 Protection</span>
-    <span>Licensed & Verified</span>
-    <span>Personal Security</span>
-    <span>Escort Services</span>
-    <span>Outstation Coverage</span>
-    <span>Family Protection</span>
-    <span>VIP Bodyguard</span>
-    <span>Event Security</span>
+    <span>24/7 Protection</span><span>Licensed &amp; Verified</span><span>Personal Security</span>
+    <span>Family Escort</span><span>Outstation Coverage</span><span>VIP Bodyguard</span>
+    <span>Event Security</span><span>PSARA Licensed</span><span>Pan-India Operations</span>
+    <span>24/7 Protection</span><span>Licensed &amp; Verified</span><span>Personal Security</span>
+    <span>Family Escort</span><span>Outstation Coverage</span><span>VIP Bodyguard</span>
+    <span>Event Security</span><span>PSARA Licensed</span><span>Pan-India Operations</span>
   </div>
 </div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-grid-lines"></div>
-
+  <div class="hero-grid"></div>
+  <div class="hero-watermark">WSF</div>
   <div class="hero-content">
-    <div class="hero-badge">Active Operations Available</div>
-    <h1>
-      YOUR SAFETY<br/>
-      <span class="gold">OUR</span>
-      <span class="outline"> MISSION</span>
-    </h1>
-    <p class="hero-sub">
-      Win Security Force delivers discreet, professional protection services — from personal security to family escort — powered by trained specialists who operate with precision and discretion.
-    </p>
-    <div class="hero-actions">
-      <a href="#booking" class="btn-primary">Book a Service</a>
-      <a href="#services" class="btn-outline">View Services</a>
+    <div class="hero-badge"><span class="dot"></span>Active Deployments Available</div>
+    <h1>YOUR SAFETY<br><span class="g">OUR</span>&nbsp;<span class="o">MISSION</span></h1>
+    <p class="hero-desc">Win Security Force delivers discreet, professional protection services — from personal security to family escort and outstation travel. Trained specialists, real-time response, absolute confidentiality.</p>
+    <div class="hero-btns">
+      <a href="#booking" class="btn-gold">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Book Protection Now
+      </a>
+      <a href="#services" class="btn-ghost">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        View All Services
+      </a>
     </div>
     <div class="hero-stats">
-      <div>
-        <div class="stat-num">500+</div>
-        <div class="stat-label">Clients Protected</div>
-      </div>
-      <div>
-        <div class="stat-num">24/7</div>
-        <div class="stat-label">Response Ready</div>
-      </div>
-      <div>
-        <div class="stat-num">10+</div>
-        <div class="stat-label">Years Experience</div>
-      </div>
+      <div><div class="stat-num" id="s1">500+</div><div class="stat-label">Clients Protected</div></div>
+      <div><div class="stat-num">24/7</div><div class="stat-label">Response Ready</div></div>
+      <div><div class="stat-num" id="s2">10+</div><div class="stat-label">Years Experience</div></div>
+      <div><div class="stat-num" id="s3">100%</div><div class="stat-label">Verified Personnel</div></div>
     </div>
   </div>
-
-  <!-- Decorative Shield -->
-  <svg class="hero-deco" width="520" height="580" viewBox="0 0 520 580" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M260 20L20 100v180c0 140 100 260 240 300 140-40 240-160 240-300V100L260 20z" stroke="#c9a84c" stroke-width="2" fill="none"/>
-    <path d="M260 60L60 128v152c0 116 84 218 200 252 116-34 200-136 200-252V128L260 60z" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.5"/>
-    <path d="M180 290l60 60 120-120" stroke="#c9a84c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <svg class="hero-deco" width="500" height="560" viewBox="0 0 500 560" fill="none">
+    <path d="M250 20L20 95v175c0 135 96 252 230 290 134-38 230-155 230-290V95L250 20z" stroke="#c9a84c" stroke-width="1.5"/>
+    <path d="M250 55L55 122v148c0 112 81 212 195 245 114-33 195-133 195-245V122L250 55z" stroke="#c9a84c" stroke-width=".8" opacity=".4"/>
+    <path d="M170 280l58 58 118-118" stroke="#c9a84c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 </section>
 
-<!-- ABOUT STRIP -->
-<div class="about-strip">
-  <div class="about-text">
-    <div class="section-label">About Win Security Force</div>
-    <h2 class="section-title">BUILT ON<br/>TRUST &amp; TRAINING</h2>
-    <p>Win Security Force is a premier private security company providing close protection, personal escort, and event security solutions. Our team consists of highly trained ex-military and law enforcement professionals.</p>
-    <p>We operate with strict confidentiality protocols, ensuring your privacy and safety are never compromised — whether for routine daily protection or high-risk assignments.</p>
-  </div>
-  <ul class="about-feature-list">
-    <li>Certified, background-verified security personnel</li>
-    <li>Threat assessment and risk analysis before every assignment</li>
-    <li>Discreet, plain-clothed protection available on request</li>
-    <li>Real-time communication and GPS tracking of personnel</li>
-    <li>Rapid response unit available round the clock</li>
-    <li>Specialized female security officers for family escort</li>
-    <li>Outstation and inter-city travel coverage</li>
-  </ul>
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span class="ti">🏛️</span><div><strong>PSARA Licensed</strong><div>Govt. Certified Agency</div></div></div>
+  <div class="trust-item"><span class="ti">🎖️</span><div><strong>Ex-Military &amp; Police</strong><div>Verified Background</div></div></div>
+  <div class="trust-item"><span class="ti">🔒</span><div><strong>100% Confidential</strong><div>NDA-Protected</div></div></div>
+  <div class="trust-item"><span class="ti">⚡</span><div><strong>2–4 Hr Deployment</strong><div>Emergency Response</div></div></div>
+  <div class="trust-item"><span class="ti">🗺️</span><div><strong>Pan-India Operations</strong><div>All Cities + Outstation</div></div></div>
 </div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-left">
+    <div class="label">About Win Security Force</div>
+    <div class="big-quote">"We don't just protect people.<br>We protect their peace of mind."</div>
+    <p>Win Security Force is a premier private security company providing close protection, personal escort, and event security solutions across India. Our team consists of highly trained ex-military and law enforcement professionals who operate with precision, discretion, and absolute professionalism.</p>
+    <p>Founded with a mission to make elite-level protection accessible to individuals, families, and businesses, we bring the same standards used for high-profile principals to every client engagement — regardless of scale.</p>
+    <p>We operate under strict confidentiality protocols, are fully licensed under the Private Security Agencies Regulation Act (PSARA), and maintain complete operational transparency with our clients at all times.</p>
+  </div>
+  <div class="about-right">
+    <div class="feat-item"><div class="feat-icon">🎖️</div><div class="feat-text"><strong>Certified &amp; Background-Verified Personnel</strong><span>Every officer undergoes thorough police verification, medical fitness tests, and multi-stage training certification before deployment.</span></div></div>
+    <div class="feat-item"><div class="feat-icon">🎯</div><div class="feat-text"><strong>Pre-Mission Threat Assessment</strong><span>We conduct a full risk and route analysis before every assignment to anticipate and eliminate potential threats in advance.</span></div></div>
+    <div class="feat-item"><div class="feat-icon">👁️</div><div class="feat-text"><strong>Discreet Plain-Clothed Protection</strong><span>Professional protection that's invisible to the public — officers blend in while maintaining full situational awareness at all times.</span></div></div>
+    <div class="feat-item"><div class="feat-icon">📡</div><div class="feat-text"><strong>Real-Time GPS &amp; Communication</strong><span>Live location tracking of all deployed officers with encrypted communication between team members and our operations centre.</span></div></div>
+    <div class="feat-item"><div class="feat-icon">👩‍✈️</div><div class="feat-text"><strong>Female Security Officers Available</strong><span>Specialized female officers for ladies' personal security, children's escort, and family protection assignments.</span></div></div>
+  </div>
+</section>
 
 <!-- SERVICES -->
 <section id="services">
-  <div class="services-header">
+  <div class="services-head">
     <div>
-      <div class="section-label">What We Offer</div>
-      <h2 class="section-title">OUR PROTECTION<br/>SERVICES</h2>
+      <div class="label">What We Offer</div>
+      <h2 class="section-title">OUR PROTECTION<br>SERVICES</h2>
     </div>
-    <p class="section-sub">Every service is tailored to your specific threat level, schedule, and personal requirements.</p>
+    <p class="section-sub">Every service is customised to your specific threat level, schedule, and personal requirements — starting from ₹3,499.</p>
   </div>
-
   <div class="services-grid">
 
-    <!-- Service 1 -->
-    <div class="service-card">
-      <div class="service-icon">🛡️</div>
-      <div class="service-tag">Most Booked</div>
-      <div class="service-title">PERSONAL SECURITY – 1 DAY</div>
-      <p class="service-desc">A trained close-protection officer assigned exclusively to you for a full day. Ideal for high-profile meetings, public appearances, or when you need peace of mind for a day.</p>
-      <div class="service-price">₹4,999 <span>/ day</span></div>
-      <div class="razorpay-wrap">
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form>
-      </div>
+    <div class="svc-card">
+      <div class="svc-num">SERVICE 01</div>
+      <div class="svc-tag">Most Popular</div>
+      <div class="svc-emoji">🛡️</div>
+      <div class="svc-title">Personal Security<br>1-Day Cover</div>
+      <p class="svc-desc">A trained close-protection officer assigned exclusively to you for a full day. Ideal for high-profile meetings, public appearances, court proceedings, or any situation where you need a professional by your side.</p>
+      <ul class="svc-includes">
+        <li>1 Dedicated protection officer</li>
+        <li>8–12 hour coverage</li>
+        <li>Pre-assignment threat assessment</li>
+        <li>Uniform or plain-clothed option</li>
+      </ul>
+      <div class="svc-price">₹4,999 <small>/ day</small></div>
+      <div class="rzp-wrap"><form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form></div>
     </div>
 
-    <!-- Service 2 -->
-    <div class="service-card">
-      <div class="service-icon">👦</div>
-      <div class="service-tag">Family</div>
-      <div class="service-title">CHILD ESCORT & PROTECTION</div>
-      <p class="service-desc">Dedicated security escort for your son or daughter — school commutes, outings, or events. Trained officers ensure your child's safety with care and discretion.</p>
-      <div class="service-price">₹3,499 <span>/ day</span></div>
-      <div class="razorpay-wrap">
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form>
-      </div>
+    <div class="svc-card">
+      <div class="svc-num">SERVICE 02</div>
+      <div class="svc-tag">Family</div>
+      <div class="svc-emoji">👦</div>
+      <div class="svc-title">Child Escort &amp;<br>Protection</div>
+      <p class="svc-desc">Dedicated security escort for your son or daughter — school commutes, tuition trips, outings, or events. Officers ensure your child's safety with care and constant parent updates throughout the day.</p>
+      <ul class="svc-includes">
+        <li>Door-to-door pickup &amp; drop</li>
+        <li>Real-time location sharing with parent</li>
+        <li>Female officers available on request</li>
+        <li>Daily summary report provided</li>
+      </ul>
+      <div class="svc-price">₹3,499 <small>/ day</small></div>
+      <div class="rzp-wrap"><form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form></div>
     </div>
 
-    <!-- Service 3 -->
-    <div class="service-card">
-      <div class="service-icon">👨‍👩‍👧‍👦</div>
-      <div class="service-tag">Family</div>
-      <div class="service-title">FAMILY MEMBER PROTECTION</div>
-      <p class="service-desc">Security coverage for a specific family member — spouse, elderly parent, or dependent — for short-term or extended periods. Full threat assessment included.</p>
-      <div class="service-price">₹5,999 <span>/ day</span></div>
-      <div class="razorpay-wrap">
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form>
-      </div>
+    <div class="svc-card">
+      <div class="svc-num">SERVICE 03</div>
+      <div class="svc-tag">Family</div>
+      <div class="svc-emoji">👨‍👩‍👧‍👦</div>
+      <div class="svc-title">Family Member<br>Protection</div>
+      <p class="svc-desc">Security coverage for any specific family member — spouse, elderly parent, or dependent — on a short-term or extended basis. Full family threat assessment and customised deployment plan included.</p>
+      <ul class="svc-includes">
+        <li>Dedicated assigned officer</li>
+        <li>Family threat &amp; risk consultation</li>
+        <li>Available for 1 day to monthly plans</li>
+        <li>Female officer option available</li>
+      </ul>
+      <div class="svc-price">₹5,999 <small>/ day</small></div>
+      <div class="rzp-wrap"><form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form></div>
     </div>
 
-    <!-- Service 4 -->
-    <div class="service-card">
-      <div class="service-icon">🚗</div>
-      <div class="service-tag">Travel</div>
-      <div class="service-title">OUTSTATION SECURITY ESCORT</div>
-      <p class="service-desc">Travelling outside the city? Our officers accompany you or your family on outstation trips, ensuring safety throughout the journey — road, rail, or air.</p>
-      <div class="service-price">₹7,999 <span>/ trip</span></div>
-      <div class="razorpay-wrap">
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form>
-      </div>
+    <div class="svc-card">
+      <div class="svc-num">SERVICE 04</div>
+      <div class="svc-tag">Travel</div>
+      <div class="svc-emoji">🚗</div>
+      <div class="svc-title">Outstation<br>Security Escort</div>
+      <p class="svc-desc">Travelling outside your city? Our officers accompany you or your family on outstation trips — ensuring safety throughout the journey by road, rail, or air. Pre-trip route planning and coordination included.</p>
+      <ul class="svc-includes">
+        <li>Route planning &amp; advance security sweep</li>
+        <li>Armed escort available (licensed)</li>
+        <li>Inter-city and multi-day trips covered</li>
+        <li>Coordination with local security if needed</li>
+      </ul>
+      <div class="svc-price">₹7,999 <small>/ trip</small></div>
+      <div class="rzp-wrap"><form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form></div>
     </div>
 
-    <!-- Service 5 -->
-    <div class="service-card">
-      <div class="service-icon">🎖️</div>
-      <div class="service-tag">Premium</div>
-      <div class="service-title">VIP CLOSE PROTECTION</div>
-      <p class="service-desc">Our premium bodyguard package for executives, politicians, and high-net-worth individuals. Includes advance route planning, armed escorts (licensed), and 24/7 coverage.</p>
-      <div class="service-price">₹14,999 <span>/ day</span></div>
-      <div class="razorpay-wrap">
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form>
-      </div>
+    <div class="svc-card">
+      <div class="svc-num">SERVICE 05</div>
+      <div class="svc-tag">Premium</div>
+      <div class="svc-emoji">🎖️</div>
+      <div class="svc-title">VIP Close<br>Protection</div>
+      <p class="svc-desc">Our premium package for executives, corporate leaders, politicians, and high-net-worth individuals. Full 360° security with advance team, route planning, licensed armed escorts, and comprehensive 24/7 coverage.</p>
+      <ul class="svc-includes">
+        <li>2-officer close protection team</li>
+        <li>Advance route &amp; venue security sweep</li>
+        <li>Licensed armed escort available</li>
+        <li>Dedicated ops support &amp; daily briefing</li>
+      </ul>
+      <div class="svc-price">₹14,999 <small>/ day</small></div>
+      <div class="rzp-wrap"><form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form></div>
     </div>
 
-    <!-- Service 6 -->
-    <div class="service-card">
-      <div class="service-icon">🏛️</div>
-      <div class="service-tag">Event</div>
-      <div class="service-title">EVENT & VENUE SECURITY</div>
-      <p class="service-desc">Professional security deployment for private events, weddings, corporate functions, and public gatherings. Crowd management, access control, and emergency response on standby.</p>
-      <div class="service-price">₹9,999 <span>/ event</span></div>
-      <div class="razorpay-wrap">
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form>
-      </div>
+    <div class="svc-card">
+      <div class="svc-num">SERVICE 06</div>
+      <div class="svc-tag">Event</div>
+      <div class="svc-emoji">🏛️</div>
+      <div class="svc-title">Event &amp; Venue<br>Security</div>
+      <p class="svc-desc">Professional security deployment for private events, weddings, corporate functions, launches, and public gatherings. Full crowd management, access control, emergency response team, and perimeter security included.</p>
+      <ul class="svc-includes">
+        <li>Multi-officer deployment (scaled to event)</li>
+        <li>Access control &amp; credential management</li>
+        <li>Emergency response team on standby</li>
+        <li>Post-event security report provided</li>
+      </ul>
+      <div class="svc-price">₹9,999 <small>/ event</small></div>
+      <div class="rzp-wrap"><form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form></div>
     </div>
 
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="process">
+  <div class="label">Simple Process</div>
+  <h2 class="section-title">HOW IT WORKS</h2>
+  <p class="section-sub">Getting professional protection deployed is fast, simple, and completely confidential — just 4 steps.</p>
+  <div class="process-steps">
+    <div class="step">
+      <div class="step-circle">01</div>
+      <div class="step-title">Book Online</div>
+      <p class="step-desc">Fill our booking form with your details, service needed, and date. Pay securely via Razorpay to confirm.</p>
+    </div>
+    <div class="step">
+      <div class="step-circle">02</div>
+      <div class="step-title">Consultation Call</div>
+      <p class="step-desc">Our ops team calls you within 30 minutes to understand your specific security needs and threat level in detail.</p>
+    </div>
+    <div class="step">
+      <div class="step-circle">03</div>
+      <div class="step-title">Officer Assigned</div>
+      <p class="step-desc">A verified, trained officer matching your profile is selected, briefed, and confirmed for your assignment.</p>
+    </div>
+    <div class="step">
+      <div class="step-circle">04</div>
+      <div class="step-title">Deployed &amp; Reported</div>
+      <p class="step-desc">Your officer is deployed on schedule. Daily reports and real-time updates keep you fully informed throughout.</p>
+    </div>
   </div>
 </section>
 
 <!-- WHY US -->
 <section id="why">
-  <div class="section-label">Why Choose Us</div>
-  <h2 class="section-title">THE WIN SECURITY<br/>ADVANTAGE</h2>
-  <p class="section-sub">We go beyond standard security practices to deliver elite protection with discipline and honour.</p>
-
+  <div class="label">Why Win Security Force</div>
+  <h2 class="section-title">THE WSF<br>ADVANTAGE</h2>
+  <p class="section-sub">We go beyond standard security to deliver elite-grade protection with military discipline and personal care.</p>
   <div class="why-grid">
-    <div class="why-card">
-      <div class="why-num">01</div>
-      <div class="why-title">Trained Professionals</div>
-      <p class="why-desc">All personnel are ex-military or ex-police with verified credentials, first-aid certification, and regular re-training cycles.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-num">02</div>
-      <div class="why-title">Zero Compromise Privacy</div>
-      <p class="why-desc">Client identities and operational details are never disclosed. Our NDAs and internal protocols ensure absolute confidentiality.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-num">03</div>
-      <div class="why-title">Rapid Deployment</div>
-      <p class="why-desc">We can deploy a protection officer within 2–4 hours of booking confirmation for emergency or urgent situations.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-num">04</div>
-      <div class="why-title">Customized Plans</div>
-      <p class="why-desc">No two clients are the same. We conduct a pre-service consultation to assess your unique security requirements and environment.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-num">05</div>
-      <div class="why-title">Licensed & Legal</div>
-      <p class="why-desc">Fully licensed under the Private Security Agencies Regulation Act (PSARA). Every officer carries proper authorization documentation.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-num">06</div>
-      <div class="why-title">Pan-India Coverage</div>
-      <p class="why-desc">Active operations in major cities and outstation routes across India. Coordination with local law enforcement where required.</p>
-    </div>
+    <div class="why-card"><div class="why-num">01</div><div class="why-icon">🎖️</div><div class="why-title">Ex-Military &amp; Police Officers</div><p class="why-desc">All personnel are ex-military or ex-police with verified credentials, first-aid certification, and regular tactical re-training every 6 months.</p></div>
+    <div class="why-card"><div class="why-num">02</div><div class="why-icon">🔐</div><div class="why-title">Zero-Compromise Privacy</div><p class="why-desc">Client identities and operational details are never disclosed. Strict NDAs and internal protocols ensure absolute confidentiality on every engagement.</p></div>
+    <div class="why-card"><div class="why-num">03</div><div class="why-icon">⚡</div><div class="why-title">Rapid 2–4 Hour Deployment</div><p class="why-desc">We can deploy a verified protection officer within 2–4 hours of booking confirmation — even for emergency or last-minute situations.</p></div>
+    <div class="why-card"><div class="why-num">04</div><div class="why-icon">📋</div><div class="why-title">Customised For Every Client</div><p class="why-desc">No template solutions. We conduct a thorough pre-service consultation to assess your unique requirements, environment, and risk factors.</p></div>
+    <div class="why-card"><div class="why-num">05</div><div class="why-icon">🏛️</div><div class="why-title">PSARA Licensed &amp; Fully Legal</div><p class="why-desc">Fully licensed under the Private Security Agencies Regulation Act (PSARA). Every officer carries proper government authorization documentation.</p></div>
+    <div class="why-card"><div class="why-num">06</div><div class="why-icon">🗺️</div><div class="why-title">Pan-India Coverage</div><p class="why-desc">Active operations in major cities and outstation routes across India. Local law enforcement coordination available for high-risk assignments.</p></div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
 <section id="testimonials">
-  <div class="section-label">Client Feedback</div>
-  <h2 class="section-title">WHAT OUR CLIENTS SAY</h2>
-  <div class="testimonials-track">
-    <div class="testi-card">
+  <div class="label">Client Feedback</div>
+  <h2 class="section-title">WHAT OUR<br>CLIENTS SAY</h2>
+  <div class="testi-grid">
+    <div class="testi">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">We hired Win Security Force for our daughter's school transport and they were professional, punctual, and extremely courteous. Total peace of mind for our family.</p>
-      <div class="testi-author">
-        <div class="testi-avatar">RV</div>
-        <div>
-          <div class="testi-name">Rajesh Venkataraman</div>
-          <div class="testi-role">Business Owner, Chennai</div>
-        </div>
-      </div>
+      <p class="testi-quote">We hired Win Security Force for our daughter's school transport and they were professional, punctual, and extremely courteous. The officer gave us daily updates and our daughter felt completely comfortable. Total peace of mind for our family.</p>
+      <div class="testi-author"><div class="testi-av">RV</div><div><div class="testi-name">Rajesh Venkataraman</div><div class="testi-role">Business Owner, Chennai</div></div></div>
     </div>
-    <div class="testi-card">
+    <div class="testi">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">Their VIP protection service during my outstation travel was flawless. Discreet, well-planned and the officer was highly trained. Strongly recommended.</p>
-      <div class="testi-author">
-        <div class="testi-avatar">SP</div>
-        <div>
-          <div class="testi-name">Sangeetha Pillai</div>
-          <div class="testi-role">Executive Director, Coimbatore</div>
-        </div>
-      </div>
+      <p class="testi-quote">Their VIP protection service during my outstation travel was absolutely flawless. Discreet, well-planned — the officer was highly trained and professional throughout. I felt completely safe. Strongly recommended to anyone who values privacy and security.</p>
+      <div class="testi-author"><div class="testi-av">SP</div><div><div class="testi-name">Sangeetha Pillai</div><div class="testi-role">Executive Director, Coimbatore</div></div></div>
     </div>
-    <div class="testi-card">
+    <div class="testi">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">Booked event security for our corporate annual day with 300+ guests. Zero incidents, excellent crowd management. Win Security Force is our go-to team now.</p>
-      <div class="testi-author">
-        <div class="testi-avatar">AK</div>
-        <div>
-          <div class="testi-name">Arjun Krishnamurthy</div>
-          <div class="testi-role">HR Manager, Bangalore</div>
-        </div>
-      </div>
+      <p class="testi-quote">Booked event security for our corporate annual day with 300+ guests. Zero incidents, excellent crowd management, and the team was incredibly well-coordinated. Win Security Force is now our permanent go-to security partner for all events.</p>
+      <div class="testi-author"><div class="testi-av">AK</div><div><div class="testi-name">Arjun Krishnamurthy</div><div class="testi-role">HR Manager, Bangalore</div></div></div>
     </div>
   </div>
 </section>
 
 <!-- BOOKING -->
 <section id="booking">
-  <div class="section-label">Book Now</div>
-  <h2 class="section-title">REQUEST YOUR<br/>PROTECTION SERVICE</h2>
-  <p class="section-sub">Fill in the form and our team will call you within 30 minutes to confirm details and assign your officer.</p>
+  <div class="label">Book Now</div>
+  <h2 class="section-title">REQUEST YOUR<br>PROTECTION SERVICE</h2>
+  <p class="section-sub">Fill in your details and complete secure payment. Our team calls within 30 minutes to confirm your booking.</p>
 
-  <div class="booking-grid">
-    <div class="booking-info">
-      <p>Choose your service type, provide your details, and complete payment via our secure Razorpay gateway. Our team reviews every booking within the hour.</p>
-      <div class="contact-chips">
-        <div class="contact-chip">
-          <div class="contact-chip-icon">📞</div>
-          <div>
-            <div class="contact-chip-text">+91 98765 43210</div>
-            <div class="contact-chip-sub">24/7 Operations Hotline</div>
-          </div>
-        </div>
-        <div class="contact-chip">
-          <div class="contact-chip-icon">✉️</div>
-          <div>
-            <div class="contact-chip-text">ops@winsecurityforce.in</div>
-            <div class="contact-chip-sub">Bookings & Enquiries</div>
-          </div>
-        </div>
-        <div class="contact-chip">
-          <div class="contact-chip-icon">📍</div>
-          <div>
-            <div class="contact-chip-text">Chennai, Tamil Nadu</div>
-            <div class="contact-chip-sub">Serving Pan-India</div>
-          </div>
-        </div>
+  <div class="booking-wrap">
+    <!-- Left info panel -->
+    <div class="booking-info-side">
+      <p>Every booking starts with a secure payment and is followed by a personalised consultation call. We review every request within the hour and match the right officer to your specific situation.</p>
+      <div class="contact-list">
+        <div class="ci"><div class="ci-icon">📞</div><div><div class="ci-title">+91 98765 43210</div><div class="ci-sub">24/7 Operations Hotline</div></div></div>
+        <div class="ci"><div class="ci-icon">✉️</div><div><div class="ci-title">ops@winsecurityforce.in</div><div class="ci-sub">Bookings &amp; Enquiries</div></div></div>
+        <div class="ci"><div class="ci-icon">📍</div><div><div class="ci-title">Chennai, Tamil Nadu</div><div class="ci-sub">Serving Pan-India</div></div></div>
+        <div class="ci"><div class="ci-icon">⏱️</div><div><div class="ci-title">2–4 Hour Deployment</div><div class="ci-sub">Emergency bookings available</div></div></div>
+      </div>
+      <div class="booking-note">
+        <span class="ni">🔒</span>
+        <p>All booking information is handled with strict confidentiality. Your personal details are never shared. All communication is encrypted and we are bound by NDA on every client engagement.</p>
+      </div>
+      <!-- Quick Pay on info side -->
+      <div class="quick-pay-box">
+        <div class="pay-title">Quick Book &amp; Pay</div>
+        <div class="pay-note">Already know what you need? Pay directly and our team will call you to confirm all details.</div>
+        <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form>
       </div>
     </div>
 
-    <div class="booking-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Your Full Name</label>
-          <input type="text" placeholder="e.g. Rajesh Kumar" />
-        </div>
-        <div class="form-group">
-          <label>Phone Number</label>
-          <input type="tel" placeholder="+91 98765 43210" />
-        </div>
+    <!-- Right form -->
+    <div class="form-wrap">
+      <div class="form-row2">
+        <div class="fg"><label>Full Name *</label><input type="text" id="f-name" placeholder="e.g. Rajesh Kumar"/></div>
+        <div class="fg"><label>Phone Number *</label><input type="tel" id="f-phone" placeholder="+91 98765 43210"/></div>
       </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" placeholder="you@example.com" />
-      </div>
-      <div class="form-group">
-        <label>Service Required</label>
-        <select>
+      <div class="fg"><label>Email Address *</label><input type="email" id="f-email" placeholder="you@example.com"/></div>
+      <div class="fg">
+        <label>Service Required *</label>
+        <select id="f-service">
           <option value="">— Select a Service —</option>
           <option>Personal Security – 1 Day (₹4,999)</option>
-          <option>Child Escort & Protection (₹3,499)</option>
+          <option>Child Escort &amp; Protection (₹3,499)</option>
           <option>Family Member Protection (₹5,999)</option>
           <option>Outstation Security Escort (₹7,999)</option>
           <option>VIP Close Protection (₹14,999)</option>
-          <option>Event & Venue Security (₹9,999)</option>
+          <option>Event &amp; Venue Security (₹9,999)</option>
         </select>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Service Date</label>
-          <input type="date" />
-        </div>
-        <div class="form-group">
-          <label>Location / City</label>
-          <input type="text" placeholder="e.g. Chennai" />
+      <div class="form-row2">
+        <div class="fg"><label>Service Start Date *</label><input type="date" id="f-date"/></div>
+        <div class="fg"><label>Duration</label><input type="text" id="f-dur" placeholder="e.g. 1 day, 3 days, 1 week"/></div>
+      </div>
+      <div class="form-row2">
+        <div class="fg"><label>City / Location *</label><input type="text" id="f-city" placeholder="e.g. Chennai, Bangalore"/></div>
+        <div class="fg">
+          <label>Number of People</label>
+          <select>
+            <option value="">— Select —</option>
+            <option>1 person</option><option>2 people</option>
+            <option>3–5 people (family)</option><option>6+ (group/event)</option>
+          </select>
         </div>
       </div>
-      <div class="form-group">
-        <label>Additional Details</label>
-        <textarea placeholder="Briefly describe your security requirement, duration, or any special instructions…"></textarea>
-      </div>
-      <div class="form-submit-wrap">
-        <p class="form-note">After submitting, pay securely below. Our team will confirm your booking within 30 minutes.</p>
-        <div class="razorpay-wrap">
-          <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form>
-        </div>
+      <div class="fg"><label>Special Requirements / Details</label><textarea id="f-notes" placeholder="Describe your security requirement, any specific threats or concerns, preferred officer gender, travel details, etc…"></textarea></div>
+
+      <hr class="form-divider"/>
+
+      <div class="pay-box">
+        <div class="pay-title">Secure Payment via Razorpay</div>
+        <div class="pay-note">Click the button below to pay securely. After payment, our operations team will call you within 30 minutes to confirm your booking and assign your officer.</div>
+        <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_SoRe5qhPSfLKIL" async></script></form>
       </div>
     </div>
   </div>
 </section>
 
+<!-- FAQ -->
+<section id="faq">
+  <div class="label">Frequently Asked</div>
+  <h2 class="section-title">QUESTIONS &amp;<br>ANSWERS</h2>
+  <div class="faq-grid" id="faqGrid">
+    <div class="faq-item"><div class="faq-q">How quickly can you deploy an officer? <span class="arrow">▶</span></div><div class="faq-a">For standard bookings, we confirm within the hour. For emergency situations, we can deploy a verified officer within 2–4 hours of payment confirmation, subject to availability in your city.</div></div>
+    <div class="faq-item"><div class="faq-q">Are officers in uniform or plain-clothed? <span class="arrow">▶</span></div><div class="faq-a">Both options are available. Uniformed officers are ideal for events and formal situations; plain-clothed officers are preferred for discreet personal protection and family escort. Specify your preference while booking.</div></div>
+    <div class="faq-item"><div class="faq-q">Do you provide female security officers? <span class="arrow">▶</span></div><div class="faq-a">Yes. We have trained female officers available for ladies' personal security, children's escort (especially for daughters), and family protection assignments. Please mention this requirement while booking.</div></div>
+    <div class="faq-item"><div class="faq-q">Is my personal information kept confidential? <span class="arrow">▶</span></div><div class="faq-a">Absolutely. All client information, operational details, and engagement specifics are kept strictly confidential under NDA. We never disclose client identities or assignment details to any third party under any circumstances.</div></div>
+    <div class="faq-item"><div class="faq-q">Do you cover outstation and other states? <span class="arrow">▶</span></div><div class="faq-a">Yes. We cover major cities across India and arrange outstation escort for road, rail, and air travel. For multi-state operations, we coordinate with trusted partner agencies and local law enforcement to ensure seamless coverage.</div></div>
+    <div class="faq-item"><div class="faq-q">What if I need security for multiple people? <span class="arrow">▶</span></div><div class="faq-a">We can deploy a team of officers for family groups or large events. The number of officers is determined during the pre-service consultation based on headcount, threat level, and assignment type. Custom pricing applies.</div></div>
+    <div class="faq-item"><div class="faq-q">What payment methods are accepted? <span class="arrow">▶</span></div><div class="faq-a">We accept all major payment methods through our secure Razorpay gateway — including UPI, debit cards, credit cards, net banking, and wallets. All transactions are encrypted and fully secure.</div></div>
+    <div class="faq-item"><div class="faq-q">Can I book on a monthly / recurring basis? <span class="arrow">▶</span></div><div class="faq-a">Yes. For ongoing personal or family protection, we offer weekly and monthly engagement plans at better rates than daily bookings. Contact our operations team directly to discuss a custom long-term protection plan.</div></div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <div>
+    <h2>READY TO FEEL SECURE?</h2>
+    <p>Don't leave your safety to chance. Book a professional protection officer today — available across India, 24/7.</p>
+  </div>
+  <a href="#booking" class="cta-btn">Book Your Officer Now</a>
+</div>
+
 <!-- FOOTER -->
 <footer>
-  <div class="footer-grid">
+  <div class="footer-main">
     <div class="footer-brand">
-      <div class="nav-logo">
-        <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 3L4 9v10c0 7.18 5.94 13.9 14 16 8.06-2.1 14-8.82 14-16V9L18 3z" fill="none" stroke="#c9a84c" stroke-width="1.8"/>
-          <path d="M12 18l4 4 8-8" stroke="#c9a84c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <div class="fb-logo">
+        <svg width="36" height="36" viewBox="0 0 38 38" fill="none">
+          <path d="M19 3L4 9.5V19c0 8.5 6.3 16.4 15 18.5C27.7 35.4 34 27.5 34 19V9.5L19 3z" stroke="#c9a84c" stroke-width="1.5" fill="rgba(201,168,76,.07)"/>
+          <path d="M13 19l4.5 4.5L25 14" stroke="#c9a84c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <div class="nav-logo-text" style="font-size:1.2rem;">
-          WIN SECURITY FORCE
-          <span>Elite Protection</span>
-        </div>
+        <div><div class="nav-name" style="font-size:1.2rem">Win Security Force</div><div class="nav-tagline">Elite Protection Services</div></div>
       </div>
-      <p>Professional close protection and security escort services. Licensed, trained, and trusted by individuals, families, and corporations across India.</p>
+      <p>Professional close protection, family escort, and event security services — licensed, trained, and trusted by hundreds of clients across India. Your safety is our singular mission.</p>
+      <div class="footer-social">
+        <a class="social-btn" href="#" title="WhatsApp">💬</a>
+        <a class="social-btn" href="#" title="Instagram">📷</a>
+        <a class="social-btn" href="#" title="Facebook">📘</a>
+        <a class="social-btn" href="#" title="LinkedIn">💼</a>
+      </div>
     </div>
     <div class="footer-col">
       <h4>Services</h4>
       <ul>
-        <li><a href="#services">Personal Security</a></li>
-        <li><a href="#services">Child Escort</a></li>
-        <li><a href="#services">Family Protection</a></li>
-        <li><a href="#services">Outstation Escort</a></li>
-        <li><a href="#services">VIP Protection</a></li>
-        <li><a href="#services">Event Security</a></li>
+        <li><a href="#services">Personal Security (1 Day)</a></li>
+        <li><a href="#services">Child Escort &amp; Protection</a></li>
+        <li><a href="#services">Family Member Protection</a></li>
+        <li><a href="#services">Outstation Security Escort</a></li>
+        <li><a href="#services">VIP Close Protection</a></li>
+        <li><a href="#services">Event &amp; Venue Security</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Company</h4>
       <ul>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Our Team</a></li>
-        <li><a href="#">Careers</a></li>
-        <li><a href="#">Certifications</a></li>
-        <li><a href="#">Media</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#why">Why Choose Us</a></li>
+        <li><a href="#process">How It Works</a></li>
+        <li><a href="#testimonials">Client Reviews</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#booking">Contact Us</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Legal</h4>
+      <h4>Legal &amp; Contact</h4>
       <ul>
         <li><a href="#">Privacy Policy</a></li>
         <li><a href="#">Terms of Service</a></li>
         <li><a href="#">Refund Policy</a></li>
         <li><a href="#">PSARA License</a></li>
       </ul>
+      <div style="margin-top:24px">
+        <div style="font-size:.85rem;color:var(--white);margin-bottom:4px;font-weight:600">📞 +91 98765 43210</div>
+        <div style="font-size:.75rem;color:var(--muted);font-weight:300">Available 24 hours, 7 days a week</div>
+        <div style="font-size:.82rem;color:var(--white);margin-top:12px;margin-bottom:4px;font-weight:600">✉️ ops@winsecurityforce.in</div>
+        <div style="font-size:.75rem;color:var(--muted);font-weight:300">Response within 30 minutes</div>
+      </div>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2025 Win Security Force. All rights reserved.</p>
-    <span class="license">PSARA Licensed · Pan-India Operations</span>
+    <p>© 2025 Win Security Force. All rights reserved. Chennai, Tamil Nadu, India.</p>
+    <span class="psara">PSARA Licensed · Ex-Military Personnel · Pan-India Operations</span>
   </div>
 </footer>
 
+<script>
+// Hamburger
+const ham=document.getElementById('ham'),mob=document.getElementById('mob-menu');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mob.classList.toggle('open')});
+document.querySelectorAll('.mob-link').forEach(l=>l.addEventListener('click',()=>{ham.classList.remove('open');mob.classList.remove('open')}));
+
+// Nav scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').style.background=window.scrollY>60?'rgba(9,9,11,.99)':'rgba(9,9,11,.93)';
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click',()=>{
+    const open=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!open)item.classList.add('open');
+  });
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}
+  });
+});
+
+// Min date on date picker
+(()=>{const dp=document.getElementById('f-date');if(dp)dp.min=new Date().toISOString().split('T')[0]})();
+</script>
 </body>
 </html>
